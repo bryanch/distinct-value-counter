@@ -1,0 +1,24 @@
+{
+  "name": "distinct-value-counter",
+  "version": "1.0.0",
+  "description": "Count distinct values/cardinalities using HyperLogLog algrithm.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bryanch/distinct-value-counter.git"
+  },
+  "keywords": [
+    "HLL",
+    "HyperLogLog",
+    "DistinctCounter"
+  ],
+  "author": "Bryan Chen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bryanch/distinct-value-counter/issues"
+  },
+  "homepage": "https://github.com/bryanch/distinct-value-counter#readme"
+}
