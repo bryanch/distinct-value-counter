@@ -32,8 +32,10 @@ describe('Distinct Value Counter', function(){
         var simlecounter = simpledict();
         var maincounter = main(precision);
         var errorRange1=new Array(2), errorRange2 = new Array(2);
-        for(var j=0;j<10;j++){
-            var r = String(random(10000000));
+        var displayCounter = 0;
+
+        for(var i=0;i<1000000;i++){
+            var r = String(random(1000000));
             simlecounter.add(r);
             hllcounter.add(r);
             maincounter.add(r);
@@ -45,30 +47,13 @@ describe('Distinct Value Counter', function(){
             var error2 = (c2-base)/base;
             aggregateErrorRange(errorRange1, error1);
             aggregateErrorRange(errorRange2, error2);
-            //console.log('Base: ' + base + ', HLL:'+c1 + ', IHLL:' + c2 + 
-            //            '. HLL Error: '+ formatPercentage(error1) + '. IHLL: ' + formatPercentage(error2));
 
-            
-        }
-
-
-        for(var i=0;i<max;i++){
-            for(var j=0;j<1000;j++){
-                var r = String(random(10000000));
-                simlecounter.add(r);
-                hllcounter.add(r);
-                maincounter.add(r);
+            displayCounter++;
+            if(displayCounter===1000){
+                console.log('Base: ' + base + ', HLL:'+c1 + ', IHLL:' + c2 + 
+                            '. HLL Error: '+ formatPercentage(error1) + '. IHLL Error: ' + formatPercentage(error2));
+                displayCounter=0;
             }
-
-            var base = simlecounter.count();
-            var c1 = hllcounter.count();
-            var c2 = maincounter.count();
-            var error1 = (c1-base)/base;
-            var error2 = (c2-base)/base;
-            aggregateErrorRange(errorRange1, error1);
-            aggregateErrorRange(errorRange2, error2);
-            console.log('Base: ' + base + ', HLL:'+c1 + ', IHLL:' + c2 + 
-                        '. HLL Error: '+ formatPercentage(error1) + '. IHLL Error: ' + formatPercentage(error2));
         }
         
         console.log('HLL Error Range:['+formatPercentage(errorRange1[0])+','+formatPercentage(errorRange1[1])+']');

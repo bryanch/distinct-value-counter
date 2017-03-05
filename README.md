@@ -7,9 +7,9 @@ I am currently using this for continously counting distinct values, for example,
 
 Following is one of my test result (using 1M random numbers)
 ```
-Base: 951700, HLL:951688, IHLL:951688. HLL Error: -0.001%. IHLL Error: -0.001%
-HLL Error Range:[-0.019%,0.134%]
-IHLL Error Range:[-0.022%,0.133%]
+Base: 951667, HLL:951690, IHLL:951683. HLL Error: 0.002%. IHLL Error: 0.001%
+HLL Error Range:[-0.181%,0.069%]
+IHLL Error Range:[-0.125%,0.051%]
 ```
 
 ### Usage ###
