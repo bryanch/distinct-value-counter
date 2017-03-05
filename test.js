@@ -25,7 +25,7 @@ describe('Distinct Value Counter', function(){
     });
 
     it('iterate random numbers', function(){
-        this.timeout(10000);
+        this.timeout(100000);
         var max=1000;
         var precision=0.001;
         var hllcounter = hll(precision);
@@ -35,7 +35,7 @@ describe('Distinct Value Counter', function(){
         var displayCounter = 0;
 
         for(var i=0;i<1000000;i++){
-            var r = String(random(1000000));
+            var r = String(random(50000));
             simlecounter.add(r);
             hllcounter.add(r);
             maincounter.add(r);
