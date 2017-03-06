@@ -50,6 +50,11 @@ var IHLL = defineClass({
 
     count: function(){
         return this.counter;
+    },
+
+    hasher: function(value){
+        this.hll.hasher(value);
+        return this;
     }
 });
 

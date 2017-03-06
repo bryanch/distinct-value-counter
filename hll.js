@@ -1,6 +1,6 @@
 // Implemented according to https://research.neustar.biz/2012/10/25/sketch-of-the-day-hyperloglog-cornerstone-of-a-big-data-infrastructure/
 
-var murmurhash3=require('murmurhash3');
+var hasher=require('./guidparser');
 var MinimumBits = 4;
 var MaximumBits = 24; // So the limit size of memory is around 16MB
 
@@ -33,7 +33,7 @@ function hll(precisionBits){
     }
 
     var indexMask = (1<<precisionBits)-1;
-    var _hasher=murmurhash3.murmur128Sync;
+    var _hasher=hasher;
 
     function addValue(v){
         return addHashValue(_hasher(v));
