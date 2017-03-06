@@ -1,6 +1,6 @@
 {
   "name": "distinct-value-counter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Count distinct values/cardinalities using HyperLogLog algrithm.",
   "main": "index.js",
   "scripts": {
