@@ -3,6 +3,7 @@ var hll = require('./hll');
 var simpledict = require('./simpledict');
 var main = require('./index');
 var uuid = require('uuid/v4');
+var murmurhash3 = require('murmurhash3');
 
 function random(n){
     return Math.floor(Math.random()*n);
@@ -29,9 +30,9 @@ describe('Distinct Value Counter', function(){
         this.timeout(100000);
         var max=1000;
         var precision=0.001;
-        var hllcounter = hll(precision);
+        var hllcounter = hll(precision).hasher(murmurhash3.murmur128Sync);
         var simlecounter = simpledict();
-        var maincounter = main(precision);
+        var maincounter = main(precision).hasher(murmurhash3.murmur128Sync);
         var errorRange1=new Array(2), errorRange2 = new Array(2);
         var displayCounter = 0;
 
