@@ -26,10 +26,10 @@ describe('Distinct Value Counter', function(){
         expect(idCounter.count()).equals(2);
     });
 
-    it('iterate random numbers', function(){
+    it('random number', function(){
         this.timeout(100000);
         var max=1000;
-        var precision=0.001;
+        var precision=0.01;
         var hllcounter = hll(precision).hasher(murmurhash3.murmur128Sync);
         var simlecounter = simpledict();
         var maincounter = main(precision).hasher(murmurhash3.murmur128Sync);
@@ -51,7 +51,7 @@ describe('Distinct Value Counter', function(){
             aggregateErrorRange(errorRange2, error2);
 
             displayCounter++;
-            if(displayCounter===1000){
+            if(displayCounter===10000){
                 console.log('Base: ' + base + ', HLL:'+c1 + ', IHLL:' + c2 + 
                             '. HLL Error: '+ formatPercentage(error1) + '. IHLL Error: ' + formatPercentage(error2));
                 displayCounter=0;
@@ -67,45 +67,45 @@ describe('Distinct Value Counter', function(){
         expect(error).lessThan(precision);
     });
 
-    // it('iterate random uuid', function(){
-    //     this.timeout(100000);
-    //     var max=1000;
-    //     var precision=0.001;
-    //     var hllcounter = hll(precision);
-    //     var simlecounter = simpledict();
-    //     var maincounter = main(precision);
-    //     var errorRange1=new Array(2), errorRange2 = new Array(2);
-    //     var displayCounter = 0;
+    it('random uuid', function(){
+        this.timeout(100000);
+        var max=1000;
+        var precision=0.01;
+        var hllcounter = hll(precision);
+        var simlecounter = simpledict();
+        var maincounter = main(precision,10);
+        var errorRange1=new Array(2), errorRange2 = new Array(2);
+        var displayCounter = 0;
 
-    //     for(var i=0;i<4000000;i++){
-    //         var r = uuid();
-    //         simlecounter.add(r);
-    //         hllcounter.add(r);
-    //         maincounter.add(r);
+        for(var i=0;i<4000000;i++){
+            var r = uuid();
+            simlecounter.add(r);
+            hllcounter.add(r);
+            maincounter.add(r);
 
-    //         var base = simlecounter.count();
-    //         var c1 = hllcounter.count();
-    //         var c2 = maincounter.count();
-    //         var error1 = (c1-base)/base;
-    //         var error2 = (c2-base)/base;
-    //         aggregateErrorRange(errorRange1, error1);
-    //         aggregateErrorRange(errorRange2, error2);
+            var base = simlecounter.count();
+            var c1 = hllcounter.count();
+            var c2 = maincounter.count();
+            var error1 = (c1-base)/base;
+            var error2 = (c2-base)/base;
+            aggregateErrorRange(errorRange1, error1);
+            aggregateErrorRange(errorRange2, error2);
 
-    //         displayCounter++;
-    //         if(displayCounter===1000){
-    //             console.log('Base: ' + base + ', HLL:'+c1 + ', IHLL:' + c2 + 
-    //                         '. HLL Error: '+ formatPercentage(error1) + '. IHLL Error: ' + formatPercentage(error2));
-    //             displayCounter=0;
-    //         }
-    //     }
+            displayCounter++;
+            if(displayCounter===10000){
+                console.log('Base: ' + base + ', HLL:'+c1 + ', IHLL:' + c2 + 
+                            '. HLL Error: '+ formatPercentage(error1) + '. IHLL Error: ' + formatPercentage(error2));
+                displayCounter=0;
+            }
+        }
         
-    //     console.log('HLL Error Range:['+formatPercentage(errorRange1[0])+','+formatPercentage(errorRange1[1])+']');
-    //     console.log('IHLL Error Range:['+formatPercentage(errorRange2[0])+','+formatPercentage(errorRange2[1])+']');
+        console.log('HLL Error Range:['+formatPercentage(errorRange1[0])+','+formatPercentage(errorRange1[1])+']');
+        console.log('IHLL Error Range:['+formatPercentage(errorRange2[0])+','+formatPercentage(errorRange2[1])+']');
 
-    //     var base = simlecounter.count();
-    //     var c2 = maincounter.count();
-    //     var error = Math.abs((c2-base)/base);
-    //     expect(error).lessThan(precision);
-    // });
+        var base = simlecounter.count();
+        var c2 = maincounter.count();
+        var error = Math.abs((c2-base)/base);
+        expect(error).lessThan(precision);
+    });
 
 });
