@@ -4,6 +4,8 @@ for(var i=0;i<16;i++){
     CharsDict[i.toString(16)]=i;
 }
 function parse(guid){
+    if(!guid)guid='';
+
     var chars = guid.toLowerCase().match(/[0-9a-f]/g);
     var numberCharsCount = 0;
     var numbers=[];
