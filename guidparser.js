@@ -10,19 +10,21 @@ function parse(guid){
     var numberCharsCount = 0;
     var numbers=[];
     var number=0;
-    for(var i=chars.length;i-->0;){
-        number<<=4;
-        number|=CharsDict[chars[i]];
-        numberCharsCount++;
+    if(chars!=null){
+        for(var i=chars.length;i-->0;){
+            number<<=4;
+            number|=CharsDict[chars[i]];
+            numberCharsCount++;
 
-        if(numberCharsCount===8){
-            numbers.push(number);
-            if(numbers.length===4){
-                break;
+            if(numberCharsCount===8){
+                numbers.push(number);
+                if(numbers.length===4){
+                    break;
+                }
+
+                number=0;
+                numberCharsCount=0;
             }
-
-            number=0;
-            numberCharsCount=0;
         }
     }
 
