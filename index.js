@@ -68,6 +68,8 @@ var IHLL = defineClass({
         offset=offset||0;
         this.counter=buff.readUIntBE(offset, 6);
         this.hll.fromBuffer(buff, offset+6);
+        this.baseCounter=null;
+        this.baseThreshold=0;
         return this;
     },
 
