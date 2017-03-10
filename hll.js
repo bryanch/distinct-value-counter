@@ -13,6 +13,14 @@ function getAlpha(bits){
     }
 }
 
+const CharsDict = {};
+const Chars = [];
+for(var i=0;i<16;i++){
+    var c = i.toString(16);
+    CharsDict[c]=i;
+    Chars[i]=c;
+}
+
 function hll(precisionBits){
     precisionBits=precisionBits<MinimumBits?MinimumBits:precisionBits;
     precisionBits=precisionBits>MaximumBits?MaximumBits:precisionBits;
@@ -24,16 +32,57 @@ function hll(precisionBits){
         registers[i]=0;
     }
     var zeroBins = bins;
+    var beta=alpha*bins*bins;
+    var threshold=5/2*bins;
+    var smallFactor = bins*Math.log(bins);
 
     var hll = {
         hasher: function(value){_hasher=value;return hll;},
         count: count,
         add: addValue,
-        error: error(precisionBits)
+        error: error(precisionBits),
+        toBuffer: toBuffer,
+        fromBuffer: fromBuffer,
+        toString: toString,
+        fromString: fromString
     }
 
     var indexMask = (1<<precisionBits)-1;
     var _hasher=hasher;
+
+    function toBuffer(){
+        var buff = Buffer.alloc(1+4+8+bins);
+        buff.writeInt8(precisionBits, 0);
+        buff.writeUInt32BE(zeroBins, 1);
+        buff.writeDoubleBE(inverseSum, 1+4);
+        Buffer.from(registers.buffer).copy(buff, 1+4+8);
+        return buff;
+    }
+
+    function toString(){
+        return toBuffer().toString('base64');
+    }
+
+    function fromBuffer(buff, offset){
+        offset=offset||0;
+        precisionBits = buff.readUInt8(offset);
+        alpha=getAlpha(precisionBits);
+        beta=alpha*bins*bins;
+        threshold=5/2*bins;
+        smallFactor = bins*Math.log(bins);
+        bins=1<<precisionBits;
+        indexMask = bins-1;
+        zeroBins=buff.readUInt32BE(offset+1);
+        inverseSum=buff.readDoubleBE(offset+1+4);
+        registers=new Uint8Array(bins);
+        buff.copy(registers, 0, offset+1+4+8);
+        return hll;
+    }
+
+    function fromString(s){
+        var buff = Buffer.from(s, 'base64');
+        return fromBuffer(buff, 0);
+    }
 
     function addValue(v){
         return addHashValue(_hasher(v));
@@ -84,9 +133,6 @@ function hll(precisionBits){
         }
     }
 
-    var beta=alpha*bins*bins;
-    var threshold=5/2*bins;
-    var smallFactor = bins*Math.log(bins);
     function count(){
         var estimate=beta/inverseSum;
         // small range correction

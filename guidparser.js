@@ -29,7 +29,7 @@ function parse(guid){
     }
 
     while(numbers.length<4){
-        numbers.push(0);
+        numbers.push(-1);
     }
 
     return numbers;

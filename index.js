@@ -55,6 +55,29 @@ var IHLL = defineClass({
     hasher: function(value){
         this.hll.hasher(value);
         return this;
+    },
+
+    toBuffer: function(){
+        var hllbuff = this.hll.toBuffer();
+        var buff=Buffer.alloc(6);
+        buff.writeUIntBE(this.counter, 0, 6);
+        return Buffer.concat([buff, hllbuff]);
+    },
+    
+    fromBuffer: function(buff, offset){
+        offset=offset||0;
+        this.counter=buff.readUIntBE(offset, 6);
+        this.hll.fromBuffer(buff, offset+6);
+        return this;
+    },
+
+    toString: function(){
+        return this.toBuffer().toString('base64');
+    },
+
+    fromString: function(s){
+        var buff=Buffer.from(s, 'base64');
+        return this.fromBuffer(buff, 0);
     }
 });
 

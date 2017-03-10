@@ -69,6 +69,7 @@ describe('Distinct Value Counter', function(){
 
     it('random uuid', function(){
         this.timeout(100000);
+        
         var max=1000;
         var precision=0.01;
         var hllcounter = hll(precision);
@@ -79,6 +80,12 @@ describe('Distinct Value Counter', function(){
 
         for(var i=0;i<4000000;i++){
             var r = uuid();
+            if(random(100000)>50000){
+                r=undefined;
+            }
+            if(random(100000)>80000){
+                r=null;
+            }
             simlecounter.add(r);
             hllcounter.add(r);
             maincounter.add(r);
@@ -106,6 +113,22 @@ describe('Distinct Value Counter', function(){
         var c2 = maincounter.count();
         var error = Math.abs((c2-base)/base);
         expect(error).lessThan(precision);
+    });
+
+    it('serialize and deserialize', function(){
+        var counter1 = main(0.001,10);
+
+        for(var i=0;i<10000;i++){
+            var r=uuid();
+            counter1.add(r);
+        }
+
+        var serialized = counter1.toString();
+        var counter2 = main(1,10);
+        counter2.fromString(serialized);
+
+        expect(counter2.count()).equals(counter1.count());
+        expect(counter2.toBuffer().compare(counter1.toBuffer())).equals(0);
     });
 
 });
