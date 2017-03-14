@@ -116,15 +116,15 @@ describe('Distinct Value Counter', function(){
     });
 
     it('serialize and deserialize', function(){
-        var counter1 = main(0.001,10);
+        var counter1 = main(0.01,10);
 
-        for(var i=0;i<10000;i++){
+        for(var i=0;i<20000;i++){
             var r=uuid();
             counter1.add(r);
         }
 
         var serialized = counter1.toString();
-        var counter2 = main(1,10);
+        var counter2 = main(1,1);
         counter2.fromString(serialized);
 
         expect(counter2.count()).equals(counter1.count());

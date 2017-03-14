@@ -52,7 +52,7 @@ function hll(precisionBits){
 
     function toBuffer(){
         var buff = Buffer.alloc(1+4+8+bins);
-        buff.writeInt8(precisionBits, 0);
+        buff.writeUInt8(precisionBits, 0);
         buff.writeUInt32BE(zeroBins, 1);
         buff.writeDoubleBE(inverseSum, 1+4);
         Buffer.from(registers.buffer).copy(buff, 1+4+8);
@@ -66,11 +66,11 @@ function hll(precisionBits){
     function fromBuffer(buff, offset){
         offset=offset||0;
         precisionBits = buff.readUInt8(offset);
+        bins=1<<precisionBits;
         alpha=getAlpha(precisionBits);
         beta=alpha*bins*bins;
         threshold=5/2*bins;
         smallFactor = bins*Math.log(bins);
-        bins=1<<precisionBits;
         indexMask = bins-1;
         zeroBins=buff.readUInt32BE(offset+1);
         inverseSum=buff.readDoubleBE(offset+1+4);

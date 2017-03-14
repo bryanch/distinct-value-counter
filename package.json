@@ -1,6 +1,6 @@
 {
   "name": "distinct-value-counter",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Count distinct values/cardinalities using HyperLogLog algrithm.",
   "main": "index.js",
   "scripts": {
@@ -21,12 +21,13 @@
     "url": "https://github.com/bryanch/distinct-value-counter/issues"
   },
   "homepage": "https://github.com/bryanch/distinct-value-counter#readme",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "chai": "^3.5.0",
+    "fast-csv": "^2.4.0",
     "mocha": "^3.2.0",
-    "uuid": "^3.0.1",
-    "murmurhash3": "^0.4.0"
+    "murmurhash3": "^0.4.0",
+    "q": "^1.4.1",
+    "uuid": "^3.0.1"
   }
 }
